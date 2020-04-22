@@ -13,15 +13,15 @@ import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button ChooseStartDate;
-    private Button ChooseEndDate;
-    private CalendarView StartDateCalendar;
-    private CalendarView EndtDateCalendar;
-    private Button BtnOK;
-    private long StartDate;
-    private String StartDateTxt;
-    private long EndDate;
-    private String EndDateTxt;
+    private Button chooseStartDate;
+    private Button chooseEndDate;
+    private CalendarView startDateCalendar;
+    private CalendarView endtDateCalendar;
+    private Button btnOK;
+    private long startDate;
+    private String startDateTxt;
+    private long endDate;
+    private String endDateTxt;
 
 
     @Override
@@ -31,67 +31,76 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
-        ChooseStartDate.setOnClickListener(new View.OnClickListener() {
+        chooseStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StartDateCalendar.setVisibility(View.VISIBLE);
-                EndtDateCalendar.setVisibility(View.GONE);
+                startDateCalendar.setVisibility(View.VISIBLE);
+                endtDateCalendar.setVisibility(View.GONE);
             }
         });
 
-        ChooseEndDate.setOnClickListener(new View.OnClickListener() {
+        chooseEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EndtDateCalendar.setVisibility(View.VISIBLE);
-                StartDateCalendar.setVisibility(View.GONE);
+                endtDateCalendar.setVisibility(View.VISIBLE);
+                startDateCalendar.setVisibility(View.GONE);
             }
         });
 
-        BtnOK.setOnClickListener(new View.OnClickListener() {
+        btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (StartDate > EndDate){
-                    Toast.makeText(MainActivity.this, "Ошибка", Toast.LENGTH_LONG).show();
-                    ChooseStartDate.setText("Дата-время старта задачи:");
-                    ChooseEndDate.setText("Дата-время окончания задачи:");
+                if (startDate == 0){
+                    Toast.makeText(MainActivity.this, "Ошибка! Введите начальную дату!", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "старт: " + StartDateTxt + " окончаниe: " + EndDateTxt, Toast.LENGTH_LONG).show();
+                    if (endDate == 0){
+                        Toast.makeText(MainActivity.this, "Ошибка! Введите конечную дату!", Toast.LENGTH_LONG).show();
+                    } else {
+                        if (startDate > endDate){
+                            Toast.makeText(MainActivity.this, "Ошибка", Toast.LENGTH_LONG).show();
+                            chooseStartDate.setText("Дата-время старта задачи:");
+                            chooseEndDate.setText("Дата-время окончания задачи:");
+                        } else {
+                            Toast.makeText(MainActivity.this, "старт: " + startDateTxt + " окончаниe: " + endDateTxt, Toast.LENGTH_LONG).show();
+                        }
+                    }
                 }
+
             }
         });
     }
 
     private void initViews() {
-        ChooseStartDate = findViewById(R.id.chooseStartDate);
-        ChooseEndDate = findViewById(R.id.chooseEndDate);
-        StartDateCalendar = findViewById(R.id.startDateCalendar);
-        EndtDateCalendar = findViewById(R.id.endtDateCalendar);
-        BtnOK = findViewById(R.id.btnOK);
+        chooseStartDate = findViewById(R.id.chooseStartDate);
+        chooseEndDate = findViewById(R.id.chooseEndDate);
+        startDateCalendar = findViewById(R.id.startDateCalendar);
+        endtDateCalendar = findViewById(R.id.endtDateCalendar);
+        btnOK = findViewById(R.id.btnOK);
 
-        // Скроем календари при запуске приложения
-        StartDateCalendar.setVisibility(View.GONE);
-        EndtDateCalendar.setVisibility(View.GONE);
 
-        StartDateCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        startDateCalendar.setVisibility(View.GONE);
+        endtDateCalendar.setVisibility(View.GONE);
+
+        startDateCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                StartDateTxt = i+"-"+i1+"-"+i2;
-                ChooseStartDate.setText("Дата-время старта задачи: " + StartDateTxt);
+                startDateTxt = i+"-"+i1+"-"+i2;
+                chooseStartDate.setText("Дата-время старта задачи: " + startDateTxt);
                 GregorianCalendar gregorianCalendar = new GregorianCalendar();
                 gregorianCalendar.set(i, i1, i2);
-                StartDate = gregorianCalendar.getTimeInMillis();
+                startDate = gregorianCalendar.getTimeInMillis();
                 calendarView.setVisibility(View.GONE);
             }
         });
 
-        EndtDateCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        endtDateCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                EndDateTxt = i+"-"+i1+"-"+i2;
-                ChooseEndDate.setText("Дата-время окончания задачи: " + EndDateTxt);
+                endDateTxt = i+"-"+i1+"-"+i2;
+                chooseEndDate.setText("Дата-время окончания задачи: " + endDateTxt);
                 GregorianCalendar gregorianCalendar = new GregorianCalendar();
                 gregorianCalendar.set(i, i1, i2);
-                EndDate = gregorianCalendar.getTimeInMillis();
+                endDate = gregorianCalendar.getTimeInMillis();
                 calendarView.setVisibility(View.GONE);
             }
         });
